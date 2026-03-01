@@ -9,7 +9,7 @@
 
 <nav class="navbar navbar-dark bg-success">
     <div class="container">
-        <span class="navbar-brand">Panel del Productor</span>
+        <span class="navbar-brand">Panel del Productor - AgroConecta Rural</span>
         <a href="index.html" class="btn btn-light">Cerrar sesión</a>
     </div>
 </nav>
@@ -51,7 +51,7 @@
                 </div>
 
                 <div class="col-md-2">
-                    <input type="number" id="price" class="form-control" placeholder="Precio por unidad" required>
+                    <input type="number" id="price" class="form-control" placeholder="Precio por unidad (COP)" required>
                 </div>
 
                 <div class="col-md-1">
@@ -62,11 +62,17 @@
         </form>
     </div>
 
-    <!-- TABLA INVENTARIO -->
+    <!-- INVENTARIO -->
     <div class="card p-4 shadow">
         <h4>Inventario</h4>
 
-        <table class="table table-striped mt-3">
+        <!-- BOTONES -->
+        <div class="mb-3 text-end">
+            <button class="btn btn-primary" onclick="printInventory()">Imprimir</button>
+            <button class="btn btn-danger" onclick="exportPDF()">Exportar PDF</button>
+        </div>
+
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Producto</th>
