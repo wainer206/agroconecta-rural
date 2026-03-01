@@ -1,69 +1,63 @@
-document.addEventListener("DOMContentLoaded", function () {
+let products = [];
 
-    // LOGIN SIMULADO
-    const loginForm = document.getElementById("loginForm");
+// Agregar producto
+document.getElementById("productForm").addEventListener("submit", function(e){
+    e.preventDefault();
 
-    if (loginForm) {
-        loginForm.addEventListener("submit", function (e) {
-            e.preventDefault();
+    const name = document.getElementById("productName").value;
+    const category = document.getElementById("category").value;
+    const quantity = parseFloat(document.getElementById("quantity").value);
+    const unit = document.getElementById("unit").value;
+    const price = parseFloat(document.getElementById("price").value);
 
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
+    const total = quantity * price;
 
-            if (email === "productor@agro.com" && password === "1234") {
-                alert("Ingreso exitoso");
-                window.location.href = "dashboard.html";
-            } else {
-                alert("Correo o contraseña incorrectos");
-            }
-        });
-    }
+    const product = { name, category, quantity, unit, price, total };
 
-    // SISTEMA DE PRODUCTOS
-    const productForm = document.getElementById("productForm");
-    const productList = document.getElementById("productList");
-
-    let products = [];
-
-    if (productForm) {
-        productForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            const name = document.getElementById("productName").value;
-            const quantity = document.getElementById("productQuantity").value;
-            const price = document.getElementById("productPrice").value;
-
-            const product = { name, quantity, price };
-            products.push(product);
-
-            renderProducts();
-
-            productForm.reset();
-        });
-    }
-
-    function renderProducts() {
-        productList.innerHTML = "";
-
-        products.forEach((product, index) => {
-            productList.innerHTML += `
-                <tr>
-                    <td>${product.name}</td>
-                    <td>${product.quantity}</td>
-                    <td>$${product.price}</td>
-                    <td>
-                        <button class="btn btn-danger btn-sm" onclick="deleteProduct(${index})">
-                            Eliminar
-                        </button>
-                    </td>
-                </tr>
-            `;
-        });
-    }
-
-    window.deleteProduct = function (index) {
-        products.splice(index, 1);
-        renderProducts();
-    };
-
+    products.push(product);
+    renderProducts();
+    this.reset();
 });
+
+function renderProducts(){
+    const list = document.getElementById("productList");
+    list.innerHTML = "";
+
+    let grandTotal = 0;
+
+    products.forEach((p, index) => {
+
+        grandTotal += p.total;
+
+        list.innerHTML += `
+            <tr>
+                <td>${p.name}</td>
+                <td>${p.category}</td>
+                <td>${p.quantity}</td>
+                <td>${p.unit}</td>
+                <td>$ ${p.price.toLocaleString("es-CO")}</td>
+                <td>$ ${p.total.toLocaleString("es-CO")}</td>
+                <td>
+                    <button class="btn btn-danger btn-sm" onclick="deleteProduct(${index})">
+                        Eliminar
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+
+    if(products.length > 0){
+        list.innerHTML += `
+            <tr class="table-success fw-bold">
+                <td colspan="5" class="text-end">TOTAL GENERAL:</td>
+                <td>$ ${grandTotal.toLocaleString("es-CO")}</td>
+                <td></td>
+            </tr>
+        `;
+    }
+}
+
+function deleteProduct(index){
+    products.splice(index, 1);
+    renderProducts();
+}
