@@ -1,7 +1,13 @@
+// ===============================
+// CARGAR PRODUCTOS GUARDADOS
+// ===============================
 let products = JSON.parse(localStorage.getItem("products")) || [];
 
 document.addEventListener("DOMContentLoaded", renderProducts);
 
+// ===============================
+// AGREGAR PRODUCTO
+// ===============================
 document.getElementById("productForm").addEventListener("submit", function(e){
     e.preventDefault();
 
@@ -16,15 +22,22 @@ document.getElementById("productForm").addEventListener("submit", function(e){
     const product = { name, category, quantity, unit, price, total };
 
     products.push(product);
+
     saveProducts();
     renderProducts();
     this.reset();
 });
 
+// ===============================
+// GUARDAR EN NAVEGADOR
+// ===============================
 function saveProducts(){
     localStorage.setItem("products", JSON.stringify(products));
 }
 
+// ===============================
+// MOSTRAR PRODUCTOS
+// ===============================
 function renderProducts(){
     const list = document.getElementById("productList");
     list.innerHTML = "";
@@ -43,7 +56,7 @@ function renderProducts(){
                 <td>${p.unit}</td>
                 <td>$ ${p.price.toLocaleString("es-CO")}</td>
                 <td>$ ${p.total.toLocaleString("es-CO")}</td>
-                <td>
+                <td class="no-print">
                     <button class="btn btn-danger btn-sm" onclick="deleteProduct(${index})">
                         Eliminar
                     </button>
@@ -57,29 +70,67 @@ function renderProducts(){
             <tr class="table-success fw-bold">
                 <td colspan="5" class="text-end">TOTAL GENERAL:</td>
                 <td>$ ${grandTotal.toLocaleString("es-CO")}</td>
-                <td></td>
+                <td class="no-print"></td>
             </tr>
         `;
     }
 }
 
+// ===============================
+// ELIMINAR PRODUCTO
+// ===============================
 function deleteProduct(index){
     products.splice(index, 1);
     saveProducts();
     renderProducts();
 }
 
-/* ---------- IMPRIMIR ---------- */
+// ===============================
+// IMPRIMIR SOLO INVENTARIO
+// ===============================
 function printInventory(){
     window.print();
 }
 
-/* ---------- EXPORTAR PDF ---------- */
+// ===============================
+// EXPORTAR PDF PROFESIONAL
+// ===============================
 function exportPDF(){
+
     let grandTotal = 0;
+
     let content = `
-        <h2>Inventario AgroConecta Rural</h2>
-        <table border="1" cellspacing="0" cellpadding="5">
+        <html>
+        <head>
+        <style>
+            @page {
+                size: letter;
+                margin: 2.54cm;
+            }
+            body {
+                font-family: Arial;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 16px;
+            }
+            th, td {
+                border: 1px solid black;
+                padding: 8px;
+                text-align: center;
+            }
+            th {
+                background-color: #d4edda;
+            }
+            h2 {
+                text-align: center;
+            }
+        </style>
+        </head>
+        <body>
+        <h2>Inventario - AgroConecta Rural</h2>
+        <table>
         <tr>
             <th>Producto</th>
             <th>Categoría</th>
@@ -110,9 +161,11 @@ function exportPDF(){
             <td><strong>$ ${grandTotal.toLocaleString("es-CO")}</strong></td>
         </tr>
         </table>
+        </body>
+        </html>
     `;
 
-    const win = window.open('', '', 'width=800,height=600');
+    const win = window.open('', '', 'width=900,height=700');
     win.document.write(content);
     win.document.close();
     win.print();
