@@ -72,6 +72,7 @@
                     <th>Unidad</th>
                     <th>Precio Unitario</th>
                     <th>Total (COP)</th>
+                    <th>Acción</th>
                 </tr>
             </thead>
             <tbody id="productList"></tbody>
@@ -112,7 +113,7 @@ function renderProducts(){
     const list = document.getElementById("productList");
     list.innerHTML = "";
 
-    products.forEach(p => {
+    products.forEach((p, index) => {
         list.innerHTML += `
             <tr>
                 <td>${p.name}</td>
@@ -121,9 +122,21 @@ function renderProducts(){
                 <td>${p.unit}</td>
                 <td>$ ${p.price.toLocaleString("es-CO")}</td>
                 <td>$ ${p.total.toLocaleString("es-CO")}</td>
+                <td>
+                    <button class="btn btn-danger btn-sm" onclick="deleteProduct(${index})">
+                        Eliminar
+                    </button>
+                </td>
             </tr>
         `;
     });
+}
+
+function deleteProduct(index){
+    if(confirm("¿Seguro que deseas eliminar este producto?")){
+        products.splice(index, 1);
+        renderProducts();
+    }
 }
 </script>
 
