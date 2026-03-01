@@ -16,6 +16,7 @@
 
 <div class="container mt-4">
 
+    <!-- FORMULARIO -->
     <div class="card p-4 shadow mb-4">
         <h4>Agregar Producto</h4>
         <form id="productForm">
@@ -61,8 +62,10 @@
         </form>
     </div>
 
+    <!-- TABLA INVENTARIO -->
     <div class="card p-4 shadow">
         <h4>Inventario</h4>
+
         <table class="table table-striped mt-3">
             <thead>
                 <tr>
@@ -71,74 +74,19 @@
                     <th>Cantidad</th>
                     <th>Unidad</th>
                     <th>Precio Unitario</th>
-                    <th>Total (COP)</th>
+                    <th>Total</th>
                     <th>Acción</th>
                 </tr>
             </thead>
             <tbody id="productList"></tbody>
         </table>
+
     </div>
 
 </div>
 
-<script>
-let products = [];
-
-document.getElementById("productForm").addEventListener("submit", function(e){
-    e.preventDefault();
-
-    const name = document.getElementById("productName").value;
-    const category = document.getElementById("category").value;
-    const quantity = parseFloat(document.getElementById("quantity").value);
-    const unit = document.getElementById("unit").value;
-    const price = parseFloat(document.getElementById("price").value);
-
-    const total = quantity * price;
-
-    const product = {
-        name,
-        category,
-        quantity,
-        unit,
-        price,
-        total
-    };
-
-    products.push(product);
-    renderProducts();
-    this.reset();
-});
-
-function renderProducts(){
-    const list = document.getElementById("productList");
-    list.innerHTML = "";
-
-    products.forEach((p, index) => {
-        list.innerHTML += `
-            <tr>
-                <td>${p.name}</td>
-                <td>${p.category}</td>
-                <td>${p.quantity}</td>
-                <td>${p.unit}</td>
-                <td>$ ${p.price.toLocaleString("es-CO")}</td>
-                <td>$ ${p.total.toLocaleString("es-CO")}</td>
-                <td>
-                    <button class="btn btn-danger btn-sm" onclick="deleteProduct(${index})">
-                        Eliminar
-                    </button>
-                </td>
-            </tr>
-        `;
-    });
-}
-
-function deleteProduct(index){
-    if(confirm("¿Seguro que deseas eliminar este producto?")){
-        products.splice(index, 1);
-        renderProducts();
-    }
-}
-</script>
+<!-- CONEXIÓN CON JAVASCRIPT -->
+<script src="app.js"></script>
 
 </body>
 </html>
