@@ -1,4 +1,8 @@
-let products = [];
+// Cargar productos guardados o iniciar vacío
+let products = JSON.parse(localStorage.getItem("products")) || [];
+
+// Cuando la página carga, mostrar productos guardados
+document.addEventListener("DOMContentLoaded", renderProducts);
 
 // Agregar producto
 document.getElementById("productForm").addEventListener("submit", function(e){
@@ -15,9 +19,16 @@ document.getElementById("productForm").addEventListener("submit", function(e){
     const product = { name, category, quantity, unit, price, total };
 
     products.push(product);
+
+    saveProducts();
     renderProducts();
     this.reset();
 });
+
+// Guardar en localStorage
+function saveProducts(){
+    localStorage.setItem("products", JSON.stringify(products));
+}
 
 function renderProducts(){
     const list = document.getElementById("productList");
@@ -59,5 +70,6 @@ function renderProducts(){
 
 function deleteProduct(index){
     products.splice(index, 1);
+    saveProducts();
     renderProducts();
 }
