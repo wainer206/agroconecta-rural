@@ -4,6 +4,33 @@
     <meta charset="UTF-8">
     <title>Panel del Productor</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+/* CONFIGURACIÓN DE IMPRESIÓN */
+@media print {
+
+    body * {
+        visibility: hidden;
+    }
+
+    #printArea, #printArea * {
+        visibility: visible;
+    }
+
+    #printArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+
+    @page {
+        size: letter;
+        margin: 2.54cm;
+    }
+}
+</style>
+
 </head>
 <body>
 
@@ -16,7 +43,7 @@
 
 <div class="container mt-4">
 
-    <!-- FORMULARIO -->
+    <!-- FORMULARIO (NO SE IMPRIME) -->
     <div class="card p-4 shadow mb-4">
         <h4>Agregar Producto</h4>
         <form id="productForm">
@@ -62,18 +89,17 @@
         </form>
     </div>
 
-    <!-- INVENTARIO -->
-    <div class="card p-4 shadow">
-        <h4>Inventario</h4>
+    <!-- ÁREA QUE SÍ SE IMPRIME -->
+    <div id="printArea" class="card p-4 shadow">
+        <h3 class="text-center mb-4">Inventario - AgroConecta Rural</h3>
 
-        <!-- BOTONES -->
-        <div class="mb-3 text-end">
+        <div class="mb-3 text-end no-print">
             <button class="btn btn-primary" onclick="printInventory()">Imprimir</button>
             <button class="btn btn-danger" onclick="exportPDF()">Exportar PDF</button>
         </div>
 
-        <table class="table table-striped">
-            <thead>
+        <table class="table table-bordered">
+            <thead class="table-success">
                 <tr>
                     <th>Producto</th>
                     <th>Categoría</th>
@@ -81,7 +107,7 @@
                     <th>Unidad</th>
                     <th>Precio Unitario</th>
                     <th>Total</th>
-                    <th>Acción</th>
+                    <th class="no-print">Acción</th>
                 </tr>
             </thead>
             <tbody id="productList"></tbody>
@@ -91,8 +117,7 @@
 
 </div>
 
-<!-- CONEXIÓN CON JAVASCRIPT -->
 <script src="app.js"></script>
 
 </body>
-</html>
+</html>    
